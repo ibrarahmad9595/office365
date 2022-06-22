@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_users_form_inherit" model="ir.ui.view">
+            <field name="name">res.users.form.inherit</field>
+            <field name="model">res.users</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <notebook colspan="4">
+                    <page name="office365_credentials" string="Office365 Credentials">
+                        <group string="Office 365 admin setting" name="office365">
+                            <field name="redirect_url" widget="redirect_url"/>
+                            <field name="client_id"/>
+                            <field name="secret_id"/>
+                        </group>
+                    </page>
+                    <page name="office365_credentials" string="Office 365 Login">
+                        <group string="Office 365 account" name="office365">
+                            <button name="get_code" type="object" string="Login Office365" class="fa fa-sign-in"/>
+                            <br></br>
+                            <field name="code" widget="code"/>
+                            <button name="test_connectiom" type="object" string="test connection" class="fa fa-sign-in"/>
+                            <button name="generate_refresh_token" type="object" string="test refresh" class="fa fa-sign-in"/>
+                        </group>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="office365_integration_form_view">
+                <field name="name">Office365Integration.form</field>
+                <field name="model">office365.integration</field>
+                <field name="arch" type="xml">
+                    <form create="false">
+                        <sheet>
+                            <group>
+                                <div>
+                                    <h1 class="text-primary">Office365 Connector</h1>
+                                    <hr/>
+                                </div>
+                            </group>
+                            <group>
+                                <div class="content-group">
+                                    <group col="4">
+                                        <group>
+                                            <strong>Contacts</strong>
+                                        </group>
+                                        <group>
+                                            <field name="import_contact" nolabel="1"/>
+                                        </group>
+                                        <group>
+                                            <field name="export_contact" nolabel="1"/>
+                                        </group>
+                                    </group>
+                                <br></br>
+                                     <group col="4">
+                                        <group>
+                                            <strong>Contacts-Email</strong>
+                                        </group>
+                                        <group>
+                                            <field name="import_email" nolabel="1"/>
+
+                                         </group>
+                                     </group>
+                                     <group>
+                                        <label for="from_date"/>
+                                        <div>
+                                            <field name="from_date"  widget="From date"/>
+                                        </div>
+                                          <label for="to_date"/>
+                                        <div>
+                                            <field name="to_date"  widget="To date"/>
+                                        </div>
+                                    </group>
+                                </div>
+                                <br></br>
+                                 <button name="sync_data" type="object" string="Sync data" class="fa fa-sign-in"/>
+                            </group>
+                            <br></br>
+                        </sheet>
+                    </form>
+                </field>
+            </record>
+        <record model="ir.actions.act_window" id="office365_action">
+            <field name="name">office365</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">office365.integration</field>
+            <field name="view_mode">form</field>
+<!--                <field name="view_id" ref="office365_integration_form_view"/>-->
+<!--            <field name="res_id" ref="office365.my_record_02"/>-->
+            <field name="target">inline</field>
+        </record>
+
+        <record model="ir.ui.view" id="office365_integration_form_view_redirect">
+                <field name="name">Office365Configuration.form</field>
+                <field name="model">office365.configuration</field>
+                <field name="arch" type="xml">
+                    <form save="true" edit="true">
+                        <sheet>
+                            <notebook colspan="4">
+                                <page name="office365_credentials" string="Office365 Credentials">
+                                    <group string="Office 365 user setting" name="office365">
+                                        <field name="redirect_url" widget="redirect_url"/>
+                                        <field name="client_id"/>
+                                        <field name="secret_id"/>
+                                    </group>
+                                    <button string="Save" class="oe_highlight" name="save" type="object" />
+                                </page>
+                                <page name="office365_credentials" string="Office 365 Login">
+                                    <group string="Office 365 account" name="office365">
+                                        <button name="get_code" type="object" string="Login Office365" class="fa fa-sign-in"/>
+                                        <br></br>
+                                    </group>
+                                </page>
+                                <page name="office365_code" string="Office 365 Code">
+                                    <group>
+                                        <field name="code" widget="code"/>
+                                    </group>
+                                    <group>
+                                        <button string="Save" class="oe_highlight" name="save_code" type="object" />
+                                        <br></br>
+                                        <button name="test_connectiom" type="object" string="test connection" class="fa fa-sign-in"/>
+<!--                                        <button name="generate_refresh_token" type="object" string="test refresh" class="fa fa-sign-in"/>-->
+                                    </group>
+                                </page>
+                            </notebook>
+                        </sheet>
+                    </form>
+                </field>
+            </record>
+        <record model="ir.actions.act_window" id="office365_action_redirect">
+            <field name="name">office365</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">office365.configuration</field>
+            <field name="view_mode">form</field>
+<!--            <field name="view_id" ref="office365_integration_form_view_redirect"/>-->
+<!--            <field name="res_id" ref="office365.my_record_02"/>-->
+            <field name="target">inline</field>
+        </record>
+
+        <menuitem id="office365_root" name="Office365" web_icon="office365,static/description/icon.png" sequence="-100"/>
+        <menuitem id="office365_integration" name="Office365Menu" parent="office365_root" action="office365_action" sequence="-100"/>
+        <menuitem id="menu_office365_configuration" name="Configuration" parent="office365_root" action="office365_action_redirect" sequence="100"/>
+<!--        <menuitem id="menu_office365_settings" name="Settings" parent="menu_office365_configuration" sequence="100" action="action_office365_config_settings"/>-->
+    </data>
+</odoo>
