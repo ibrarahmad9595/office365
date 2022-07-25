@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+;access_office365_office365,office365.office365,model_office365_office365,base.group_user,1,1,1,1
+access_office365_integration,office365.integration,model_office365_integration,,1,1,1,0
+access_office365_configuration,office365.configuration,model_office365_configuration,,1,1,1,0
